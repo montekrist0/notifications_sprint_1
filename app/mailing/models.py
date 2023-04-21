@@ -21,34 +21,46 @@ class UUIDMixin(models.Model):
 
 
 class AdminTitleMixin(models.Model):
-    admin_title = models.CharField(verbose_name=_('Admin name'), blank=False, null=False, max_length=255)
+    admin_title = models.CharField(
+        verbose_name=_("Admin name"), blank=False, null=False, max_length=255
+    )
 
     class Meta:
         abstract = True
 
 
 class EmailTemplateContent(UUIDMixin, TimeStampedMixin, AdminTitleMixin):
-    title = models.TextField(verbose_name=_('title'), blank=False, null=False)
+    title = models.TextField(verbose_name=_("title"), blank=False, null=False)
     text = HTMLField()
 
     class Meta:
-        db_table = 'content\".\"email_template'
-        verbose_name = _('Email template')
-        verbose_name_plural = _('Email templates')
+        db_table = 'content"."email_template'
+        verbose_name = _("Email template")
+        verbose_name_plural = _("Email templates")
 
     def __str__(self):
         return self.admin_title
 
 
 class EmailTemplateImage(UUIDMixin, TimeStampedMixin, AdminTitleMixin):
-    template = models.ForeignKey(EmailTemplateContent, verbose_name=_('Email template'), blank=True, null=True,
-                                 on_delete=models.CASCADE)
-    image = models.ImageField(verbose_name=_('Image'), blank=False, null=False, upload_to='templates/email/%Y/%m/%d/')
+    template = models.ForeignKey(
+        EmailTemplateContent,
+        verbose_name=_("Email template"),
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    image = models.ImageField(
+        verbose_name=_("Image"),
+        blank=False,
+        null=False,
+        upload_to="templates/email/%Y/%m/%d/",
+    )
 
     class Meta:
-        db_table = 'content\".\"email_template_picture'
-        verbose_name = _('Email template picture')
-        verbose_name_plural = _('Email templates pictures')
+        db_table = 'content"."email_template_picture'
+        verbose_name = _("Email template picture")
+        verbose_name_plural = _("Email templates pictures")
 
     def __str__(self):
         return self.admin_title

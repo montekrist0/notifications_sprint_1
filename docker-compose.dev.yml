@@ -5,7 +5,7 @@ services:
     image: postgres:14
     restart: unless-stopped
     env_file:
-      - ./dev.env
+      - ./.env
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
       interval: 2s
@@ -16,13 +16,13 @@ services:
     ports:
       - "5432:5432"
 
-  notification_app:
+  notification_admin_panel:
     image: python:3.10
     restart: unless-stopped
     env_file:
-      - ./dev.env
+      - ./.env
     volumes:
-      - ./app:/app
+      - ./notification_admin_panel:/app
     command: >
       bash -c "pip install --upgrade pip
       && pip install --no-cache-dir -r /app/requirements.txt

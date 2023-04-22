@@ -1,6 +1,6 @@
 INSTALLED_APPS = [
-    "grappelli",
-    "filebrowser",
+    # "grappelli",
+    # "filebrowser",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -11,7 +11,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "corsheaders",
     "sorl.thumbnail",
-    "tinymce",
+    # "tinymce",
     "django_celery_results",
     "django_celery_beat",
     "mailing.apps.MailingConfig",

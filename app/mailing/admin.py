@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from sorl.thumbnail import get_thumbnail
 
-from .models import EmailTemplateContent, EmailTemplateImage
+from .models import EmailTemplateContent, EmailTemplateImage, EmailTemplateContext, EmailAssembled
 
 
 class TemplateImageInline(admin.TabularInline):
@@ -41,3 +41,14 @@ class TemplateImageAdmin(admin.ModelAdmin):
         return mark_safe(f"""<img src={url.url} />""")
 
     get_thumb.short_description = "image"
+
+
+@admin.register(EmailTemplateContext)
+class TemplateContext(admin.ModelAdmin):
+    list_display = ("admin_title",)
+
+
+@admin.register(EmailAssembled)
+class AssembledEmail(admin.ModelAdmin):
+    list_display = ("template", "context",)
+    readonly_fields = ("text",)

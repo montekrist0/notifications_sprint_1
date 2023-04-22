@@ -2,11 +2,10 @@ version: '3.8'
 
 services:
   notification_db:
-    image: postgres:15.1
+    image: postgres:14
     restart: unless-stopped
     env_file:
-      - ./.env.dev
-    user: app
+      - ./dev.env
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
       interval: 2s
@@ -21,7 +20,7 @@ services:
     image: python:3.10
     restart: unless-stopped
     env_file:
-      - ./.env.dev
+      - ./dev.env
     volumes:
       - ./app:/app
     command: >

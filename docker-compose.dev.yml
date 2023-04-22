@@ -22,7 +22,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./notification_admin_panel:/app
+      - ./admin_panel:/app
     command: >
       bash -c "pip install --upgrade pip
       && pip install --no-cache-dir -r /app/requirements.txt

@@ -92,11 +92,14 @@ class EmailTemplateContext(UUIDMixin, TimeStampedMixin, AdminTitleMixin):
                 "custom_cta": self.custom_cta}
 
 
-class EmailAssembled(EmailTemplateContent):
+class EmailAssembled(UUIDMixin, TimeStampedMixin, AdminTitleMixin):
     template = models.ForeignKey(EmailTemplateContent, verbose_name=_('E-mail template'), blank=False, null=False,
                                  on_delete=models.DO_NOTHING, related_name='EmailAssembled')
     context = models.ForeignKey(EmailTemplateContext, verbose_name=_('E-mail context'), blank=False, null=False,
                                 on_delete=models.DO_NOTHING)
+
+    title = models.TextField(verbose_name=_("E-mail subject"), blank=False, null=False)
+    text = models.TextField(verbose_name=_("HTML"), blank=False, null=False)
 
     class Meta:
         db_table = 'content"."email_assembled'

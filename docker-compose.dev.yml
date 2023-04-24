@@ -1,36 +1,13 @@
 version: '3.8'
 
 services:
-  notification_db:
-    image: postgres:14
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
-      interval: 2s
-      timeout: 2s
-      retries: 5
-    expose:
-      - 5432
+  notification_rabbitmq:
+    image: rabbitmq:3.9.29-management
     ports:
-      - "5432:5432"
+      - "15672:15672"
+      - "5672:5672"
 
-  notification_admin_panel:
-    image: python:3.10
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    volumes:
-      - ./admin_panel:/app
-    command: >
-      bash -c "pip install --upgrade pip
-      && pip install --no-cache-dir -r /app/requirements.txt
-      && python /app/src/manage.py migrate
-      && python /app/src/manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
-    depends_on:
-      notification_db:
-        condition: service_healthy
+
+
+
 

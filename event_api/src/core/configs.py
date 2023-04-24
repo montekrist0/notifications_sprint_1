@@ -5,8 +5,8 @@ from pydantic import (BaseSettings,
 class Settings(BaseSettings):
     rabbitmq_host: str = Field(default='localhost')
     rabbitmq_port: int = Field(default=5672)
-    rabbitmq_user: str = Field(default='admin')
-    rabbitmq_password: str = Field(default='password')
+    rabbitmq_username: str = Field(default='admin')
+    rabbitmq_password: str = Field(default='admin')
     rabbitmq_delivery_mode: int = Field(default=2)
 
     rabbitmq_queue_send_welcome: str = Field(default='emails.send-welcome')

@@ -8,7 +8,7 @@ channel: aiormq.Channel | None = None
 
 async def create_connection_rabbitmq():
     connection_ = await aiormq.connect(
-        f'amqp://{settings.rabbitmq_user}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:{settings.rabbitmq_port}/')
+        f'amqp://{settings.rabbitmq_username}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:{settings.rabbitmq_port}/')
     return connection_
 
 

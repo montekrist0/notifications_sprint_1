@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from pydantic import BaseSettings
 
 
-DEBUG = True
+DEBUG = False
 if DEBUG:
     env_path = Path('.') / '.env.local'
     load_dotenv(dotenv_path=env_path)

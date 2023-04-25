@@ -1,4 +1,4 @@
-from pymongo import MongoClient, IndexModel, ASCENDING, DESCENDING
+from pymongo import ASCENDING, DESCENDING
 from pymongo.errors import ConnectionFailure, DuplicateKeyError
 from pymongo.database import Database
 from bson.objectid import ObjectId

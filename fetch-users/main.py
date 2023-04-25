@@ -20,9 +20,6 @@ if __name__ == '__main__':
 
     while True:
         try:
-            # connector = MongoConnector(mongo_host=SETTINGS.MONGO_HOST, mongo_port=SETTINGS.MONGO_PORT,
-            #                            database=SETTINGS.DB_NAME)
-            # db_client = connector.client
             fetched_data = AuthExtract(start_id=start_id, end_id=end_id).results
             error_counter = 0
             MongoLoad(collection=SETTINGS.COLLECTION, data=fetched_data, mongo_db_connector=db_client)

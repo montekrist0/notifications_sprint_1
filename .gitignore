@@ -170,3 +170,4 @@ tes.sql
 garbage.py
 queris.sql
 /email-templates/
+/fetch-users/config/.env.local

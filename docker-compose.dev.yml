@@ -17,6 +17,8 @@ services:
       - 5432
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   notification_app:
     build: ./app
@@ -74,3 +76,19 @@ services:
       - celery
       - rabbitmq
 
+  etl:
+    container_name: etl
+    build: ./fetch-users
+    env_file:
+      - "./.env.etl"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+
+volumes:
+  postgres_data:

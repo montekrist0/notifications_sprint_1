@@ -1,0 +1,4 @@
+aiormq==6.7.4
+pydantic==1.10.7
+celery==5.2.7
+motor==3.1.2

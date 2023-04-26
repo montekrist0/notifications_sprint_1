@@ -27,6 +27,6 @@ class UserPreferenceService:
 @lru_cache(maxsize=None)
 def get_user_pref_service():
     client = get_mongo_client()
-    db = client[settings.mongo_db]
+    db = client[settings.mongo_user_preference_db]
     collection = db[settings.user_preference_collection]
     return UserPreferenceService(collection)

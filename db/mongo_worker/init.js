@@ -1,10 +1,34 @@
 conn = new Mongo();
-db = conn.getDB("ugc2_films");
+db = conn.getDB("notifications");
 
-db.createCollection("liked_films");
-db.createCollection("bookmarks_films");
-db.createCollection("reviewed_films");
+db.createCollection("notifications");
+db.createCollection("statuses");
+db.createCollection("types");
 
-db.liked_films.createIndex({ film_id: 1, user_id: 1 }, { unique: true });
-db.bookmarks_films.createIndex({ film_id: 1, user_id: 1 }, { unique: true });
-db.reviewed_films.createIndex({ film_id: 1, user_id: 1 }, { unique: true });
+db.types.insertMany([
+    {
+        _id: 1,
+        name: "email"
+    },
+    {
+        _id: 2,
+        name: "websocket"
+    }
+])
+
+db.statuses.insertMany([
+    {
+        _id: 1,
+        name: "processed"
+    },
+    {
+        _id: 2,
+        name: "cansel"
+    },
+    {
+        _id: 3,
+        name: "done"
+    }
+])
+
+

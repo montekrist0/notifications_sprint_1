@@ -8,9 +8,16 @@ class Settings(BaseSettings):
     rabbitmq_password: str = Field(default="admin")
 
     worker_mongo_host: str = Field(default="localhost")
-    worker_mongo_port: int = Field(default=27017)
-    worker_mongo_db: str = Field(default="27017")
-    worker_mongo_collection: str = Field(default="27017")
+    worker_mongo_port: int = Field(default=27127)
+    worker_mongo_db: str = Field(default="notifications")
+    worker_mongo_collection_notifications: str = Field(default="notifications")
+
+    user_preference_api_url: str = Field(default='http://localhost:8002')
+
+    sendinblue_apikey: str = Field(
+        default='change_me')
+    sendinblue_email_sender: str = Field(default='change_me')
+
 
 
 class SettingsQueue(BaseSettings):

@@ -32,6 +32,54 @@ services:
     ports:
       - "8001:8001"
 
+  user_preference_api:
+    build:
+      context: ./user_preference_api
+    image: user_preference_api-image
+    env_file:
+      - ./.env
+    container_name: user_preference_api
+    restart: unless-stopped
+    depends_on:
+      notifications_mongo_db:
+        condition: service_healthy
+    networks:
+      - movies_network
+    ports:
+      - "8002:8001"
+
+  notifications_mongo_db:
+    image: mongo:4.4.20-rc0-focal
+    restart: always
+    expose:
+      - "27017"
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+    volumes:
+      - ./db/mongo:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "27017:27017"
+    networks:
+      - movies_network
+
+  mongo_express_open_data:
+    image: mongo-express:1.0.0-alpha
+    restart: always
+    expose:
+      - "8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: notifications_mongo_db
+      ME_CONFIG_MONGODB_PORT: 27017
+    ports:
+      - "8081:8081"
+    networks:
+      - movies_network
+
 networks:
   movies_network:
     external: true

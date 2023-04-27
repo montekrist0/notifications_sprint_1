@@ -18,5 +18,5 @@ class BaseContextCollectService:
                         data = await response.json()
                         return data
                     return None
-            except aiohttp.ClientOSError as e:
+            except aiohttp.ClientOSError:
                 return None

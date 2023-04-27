@@ -13,7 +13,7 @@ class ContextUsersCollectService(BaseContextCollectService):
         return None
 
     async def get_users(self, group_id: str = None):
-        url_params = f"/api/v1/notification_preference/users"
+        url_params = "/api/v1/notification_preference/users"
         params_request = None
         if group_id:
             params_request = {"group_id": group_id}

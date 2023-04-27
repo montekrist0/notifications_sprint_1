@@ -1,13 +1,9 @@
 import sib_api_v3_sdk
 from celery import Celery
-from sib_api_v3_sdk import (SendSmtpEmailSender,
-                            SendSmtpEmailTo)
-from sib_api_v3_sdk.rest import ApiException
-
-from core.config import (broker_url,
-                         settings)
+from core.config import broker_url, settings
 from services.db_manager import get_db_manager
-
+from sib_api_v3_sdk import SendSmtpEmailSender, SendSmtpEmailTo
+from sib_api_v3_sdk.rest import ApiException
 
 app = Celery("tasks", broker=broker_url)
 
@@ -34,7 +30,7 @@ def send_email(address: str, body: str, subject: str, notification_id):
         mongo_db_manager.update_status_by_id(
             settings.worker_mongo_collection_notifications, notification_id, 3
         )
-    except ApiException as e:
+    except ApiException:
         mongo_db_manager.update_status_by_id(
             settings.worker_mongo_collection_notifications, notification_id, 2
         )

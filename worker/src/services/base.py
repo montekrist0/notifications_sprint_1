@@ -5,7 +5,9 @@ class BaseContextCollectService:
     def __init__(self, url: str):
         self.url: str = url
 
-    async def create_get_response(self, url_params: str = None, params_request: dict = None):
+    async def create_get_response(
+        self, url_params: str = None, params_request: dict = None
+    ):
         async with aiohttp.ClientSession() as session:
             url = self.url
             if url_params:

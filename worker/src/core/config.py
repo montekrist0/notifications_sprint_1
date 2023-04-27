@@ -12,12 +12,10 @@ class Settings(BaseSettings):
     worker_mongo_db: str = Field(default="notifications")
     worker_mongo_collection_notifications: str = Field(default="notifications")
 
-    user_preference_api_url: str = Field(default='http://localhost:8002')
+    user_preference_api_url: str = Field(default="http://user_preference_api:8001")
 
-    sendinblue_apikey: str = Field(
-        default='change_me')
-    sendinblue_email_sender: str = Field(default='change_me')
-
+    sendinblue_apikey: str = Field(default="asd")
+    sendinblue_email_sender: str = Field(default="asd")
 
 
 class SettingsQueue(BaseSettings):

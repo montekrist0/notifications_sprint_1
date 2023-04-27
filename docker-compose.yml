@@ -111,6 +111,24 @@ services:
     networks:
       - movies_network
 
+  notification_worker:
+    build:
+      context: ./worker
+    image: notification_worker-image
+    env_file:
+      - ./.env
+    container_name: notification_worker
+    restart: unless-stopped
+    depends_on:
+      notifications_worker_mongo_db:
+        condition: service_healthy
+      user_preference_api:
+        condition: service_started
+      notifications_rabbitmq:
+        condition: service_healthy
+    networks:
+      - movies_network
+
 networks:
   movies_network:
     external: true

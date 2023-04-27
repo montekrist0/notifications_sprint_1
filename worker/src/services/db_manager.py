@@ -1,12 +1,10 @@
-import bson
-
 from functools import lru_cache
 
-from pymongo.database import Database
-from pymongo.collection import Collection
-
-from core.db import get_mongo_worker_client
+import bson
 from core.config import settings
+from core.db import get_mongo_worker_client
+from pymongo.collection import Collection
+from pymongo.database import Database
 
 
 class MongoDbManager:
@@ -25,7 +23,19 @@ class MongoDbManager:
         collection: Collection = self.mongo_client[collection_name]
         filter_ = {"_id": bson.ObjectId(id_)}
         update = {"$set": {"status_id": status}}
-        result = collection.update_one(filter_, update)
+        collection.update_one(filter_, update)
+
+    def update_like_by_id(self, collection_name: str, id_: bson.ObjectId):
+        collection: Collection = self.mongo_client[collection_name]
+        filter_ = {"_id": id_}
+        update = {"$inc": {"content.likes_count_new": 1}}
+        collection.update_one(filter_, update)
+
+    def check_like(self, collection_name: str, user_id: str, review_id: int):
+        collection: Collection = self.mongo_client[collection_name]
+        filter_ = {"content.user_id": user_id, "content.review_id": review_id}
+        result = collection.find_one(filter=filter_)
+        return result
 
 
 @lru_cache()

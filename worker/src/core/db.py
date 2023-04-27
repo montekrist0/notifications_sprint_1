@@ -1,7 +1,6 @@
 from functools import lru_cache
 
 import pymongo
-
 from core.config import settings
 
 
@@ -11,6 +10,3 @@ def get_mongo_worker_client():
         host=settings.worker_mongo_host, port=settings.worker_mongo_port, maxPoolSize=10
     )
     return mongo_worker_client
-
-
-

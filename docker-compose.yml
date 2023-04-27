@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  notification_rabbitmq:
+  notifications_rabbitmq:
     image: rabbitmq:3.9.29-management
     env_file:
       - ./.env
@@ -16,16 +16,15 @@ services:
       - "15672:15672"
       - "5672:5672"
 
-  notification_event_api:
+  notifications_event_api:
     build:
       context: ./event_api
     image: notification_event_api-image
     env_file:
       - ./.env
-    container_name: notification_event_api
     restart: unless-stopped
     depends_on:
-      notification_rabbitmq:
+      notifications_rabbitmq:
         condition: service_healthy
     networks:
       - movies_network
@@ -41,22 +40,22 @@ services:
     container_name: user_preference_api
     restart: unless-stopped
     depends_on:
-      notifications_mongo_db:
+      notifications_user_preference_mongo_db:
         condition: service_healthy
     networks:
       - movies_network
     ports:
       - "8002:8001"
 
-  notifications_mongo_db:
+  notifications_user_preference_mongo_db:
     image: mongo:4.4.20-rc0-focal
     restart: always
     expose:
       - "27017"
     environment:
-      MONGO_INITDB_DATABASE: ${MONGO_DB}
+      MONGO_INITDB_DATABASE: ${MONGO_USER_PREFERENCE_DB}
     volumes:
-      - ./db/mongo:/docker-entrypoint-initdb.d
+      - ./db/mongo_user_preference:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
       interval: 30s
@@ -67,16 +66,66 @@ services:
     networks:
       - movies_network
 
-  mongo_express_open_data:
+  notifications_user_preference_mongo_express:
     image: mongo-express:1.0.0-alpha
     restart: always
     expose:
       - "8081"
     environment:
-      ME_CONFIG_MONGODB_SERVER: notifications_mongo_db
+      ME_CONFIG_MONGODB_SERVER: notifications_user_preference_mongo_db
       ME_CONFIG_MONGODB_PORT: 27017
     ports:
       - "8081:8081"
+    networks:
+      - movies_network
+
+  notifications_worker_mongo_db:
+    image: mongo:4.4.20-rc0-focal
+    restart: always
+    expose:
+      - "27017"
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_WORKER_DB}
+    volumes:
+      - ./db/mongo_worker:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "27127:27017"
+    networks:
+      - movies_network
+
+  notifications_worker_mongo_express:
+    image: mongo-express:1.0.0-alpha
+    restart: always
+    expose:
+      - "8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: notifications_worker_mongo_db
+      ME_CONFIG_MONGODB_PORT: 27017
+    ports:
+      - "8082:8081"
+    networks:
+      - movies_network
+
+  notification_worker:
+    build:
+      context: ./worker
+    image: notification_worker-image
+    env_file:
+      - ./.env
+    container_name: notification_worker
+    restart: unless-stopped
+    depends_on:
+      notifications_worker_mongo_db:
+        condition: service_healthy
+      user_preference_api:
+        condition: service_started
+      notifications_rabbitmq:
+        condition: service_healthy
     networks:
       - movies_network
 

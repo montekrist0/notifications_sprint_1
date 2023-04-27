@@ -5,10 +5,10 @@ from db.clients import mongo
 from fastapi import FastAPI
 from view.api.v1 import user_preference
 
-sentry_sdk.init(
-    dsn=settings.sentry_dsn,
-    traces_sample_rate=settings.traces_sample_rate,
-)
+# sentry_sdk.init(
+#     dsn=settings.sentry_dsn,
+#     traces_sample_rate=settings.traces_sample_rate,
+# )
 
 app = FastAPI(
     title="API для управления пользовательскими предпочтениями по получению уведомлений",

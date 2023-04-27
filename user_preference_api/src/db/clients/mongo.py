@@ -4,8 +4,8 @@ import motor.motor_asyncio
 from core.configs import settings
 from motor.motor_asyncio import AsyncIOMotorCollection
 
-host = settings.mongo_host
-port = settings.mongo_port
+host = settings.mongo_user_preference_host
+port = settings.mongo_user_preference_port
 
 client: typing.Union[AsyncIOMotorCollection, None] = None
 

@@ -38,5 +38,4 @@ def send_email(address: str, body: str, subject: str, notification_id):
         mongo_db_manager.update_status_by_id(
             settings.worker_mongo_collection_notifications, notification_id, 2
         )
-        print(e)
         pass

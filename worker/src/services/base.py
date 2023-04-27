@@ -19,6 +19,4 @@ class BaseContextCollectService:
                         return data
                     return None
             except aiohttp.ClientOSError as e:
-                # TODO убрать принт
-                print(e)
                 return None

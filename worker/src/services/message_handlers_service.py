@@ -29,7 +29,7 @@ class EventHandler:
 
     async def handler_event_welcome(self, message: DeliveredMessage):
         content: dict = orjson.loads(message.body)
-        print(content)
+
         user_id: str = content["user_id"]
         user = await self.user_service.get_user(user_id)
         if user:
@@ -59,7 +59,6 @@ class EventHandler:
     async def handler_event_bulk_mails(self, message: DeliveredMessage):
         message_body = orjson.loads(message.body)
         group_id = message_body["group_id"]
-        print(message_body)
         # TODO в апи юзер преферренс нужна ручка
         # users = await self.user_service.get_users(group_id=group_id)
         # if users:

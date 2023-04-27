@@ -10,7 +10,7 @@ from services.context import (
     ContextUsersCollectService,
     get_context_template_service,
     get_context_user_service,
-    )
+)
 from services.db_manager import get_db_manager
 from services.tools import get_current_utc_datetime
 from tasks import send_email
@@ -57,8 +57,9 @@ class EventHandler:
                 )
 
     async def handler_event_bulk_mails(self, message: DeliveredMessage):
-        message_body = orjson.loads(message.body)
-        group_id = message_body["group_id"]
+        pass
+        # message_body = orjson.loads(message.body)
+        # group_id = message_body["group_id"]
         # TODO в апи юзер преферренс нужна ручка
         # users = await self.user_service.get_users(group_id=group_id)
         # if users:

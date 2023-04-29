@@ -1,8 +1,5 @@
-up-dev:
-	docker-compose -f docker-compose.dev.yml up
-re-build:
-	docker-compose -f docker-compose.dev.yml stop
-	docker-compose -f docker-compose.dev.yml down
-	make up-dev
-re-build-app-dev:
-	docker-compose -f docker-compose.dev.yml up --build --no-deps -d notification_app
+up:
+	docker-compose up
+	docker-compose exec mailer_panel python manage.py createsuperuser --username admin --email admin@email.com --no-input
+down:
+	docker-compose down -v

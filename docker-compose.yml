@@ -129,6 +129,22 @@ services:
     networks:
       - movies_network
 
+  notification_scheduler:
+    build:
+      context: ./scheduler
+    image: notiication_scheduler_image
+    env_file:
+      - ./.env
+    container_name: notification_scheduler
+    restart: unless-stopped
+    depends_on:
+      notifications_rabbitmq:
+        condition: service_healthy
+      notifications_worker_mongo_db:
+        condition: service_healthy
+    networks:
+      - movies_network
+
 networks:
   movies_network:
     external: true

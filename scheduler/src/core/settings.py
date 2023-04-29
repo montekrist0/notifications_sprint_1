@@ -9,17 +9,18 @@ class Settings(BaseSettings):
     rabbitmq_username: str = Field(default="admin")
     rabbitmq_password: str = Field(default="admin")
 
-    mongo_host: str = Field(env="WORKER_MONGO_HOST", default="localhost")
-    mongo_port: int = Field(env="WORKER_MONGO_PORT", default=27127)
-    mongo_db: str = Field(env="worker_mongo_db", default="notifications")
+    mongo_host: str = Field(env="MONGO_WORKER_HOST", default="localhost")
+    mongo_port: int = Field(env="MONGO_WORKER_PORT", default=27127)
+    mongo_db: str = Field(env="WORKER_MONGO_DB", default="notifications")
     mongo_collection_notifications: str = Field(
-        env="worker_mongo_collection_notifications", default="notifications"
+        env="WORKER_MONGO_COLLECTION_NOTIFICATIONS", default="notifications"
     )
 
     event_api_base_url: str
     event_api_like_url: str
     event_api_personal_selection_url: str
     event_api_mass_notifications_url: str
+    event_api_send_mail_url: str
 
 
 class ApiSettings(str, Enum):

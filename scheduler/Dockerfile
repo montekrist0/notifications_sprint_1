@@ -13,6 +13,7 @@ RUN groupadd -r app &&  \
 
 
 COPY ./requirements.txt .
+COPY ./entrypoint.sh .
 
 RUN pip install --upgrade pip &&  \
     pip install --no-cache-dir -r requirements.txt
@@ -23,4 +24,4 @@ RUN chmod +x  $APP_HOME/entrypoint.sh
 
 USER app
 
-CMD ["celery", "-A", "tasks", "beat"]
+ENTRYPOINT ["/home/app/scheduler/entrypoint.sh"]

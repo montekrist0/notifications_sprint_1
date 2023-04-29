@@ -16,6 +16,16 @@ class UserPreferenceService:
         )
         return UserInfo.parse_obj(user_info_doc)
 
+    async def get_users_info(self, group_id: str):
+        filter_ = {"group_id": group_id} if group_id else None
+        cursor = self.mongo_collection_of_users.find(filter_)
+
+        users = []
+        async for user in cursor:
+            users.append(user)
+
+        return [UserInfo.parse_obj(user) for user in users]
+
     async def set_user_preference(self, user_id: str, preference: dict):
         result = await self.mongo_collection_of_users.update_one(
             {"user_id": user_id}, {"$set": preference}

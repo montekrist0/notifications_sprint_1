@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from fastapi import APIRouter, Depends, Response, status
 from services.user_preference_service import (
     UserPreferenceService,
@@ -13,7 +15,7 @@ router = APIRouter()
     response_model=UserInfo,
     summary="Получение информации о пользователе",
 )
-async def get_likes_list_for_film(
+async def get_one_user_info(
     user_id: str,
     user_pref_service: UserPreferenceService = Depends(get_user_pref_service),
 ):
@@ -26,7 +28,7 @@ async def get_likes_list_for_film(
     response_model=UserInfo,
     summary="Обновление записи о пользователе",
 )
-async def change_rating_film(
+async def update_user_preferences(
     user_id: str,
     preferences_params: UserPreferenceInput,
     user_pref_service: UserPreferenceService = Depends(get_user_pref_service),
@@ -40,3 +42,16 @@ async def change_rating_film(
     return Response(
         "Preferences were not updated", status_code=status.HTTP_304_NOT_MODIFIED
     )
+
+
+@router.get(
+    "/users",
+    response_model=List[UserInfo],
+    summary="Получение информации о пользователях группы или всех пользователях",
+)
+async def get_many_users_info(
+    group_id: Optional[str] = None,
+    user_pref_service: UserPreferenceService = Depends(get_user_pref_service),
+):
+    users = await user_pref_service.get_users_info(group_id=group_id)
+    return [UserInfo.parse_obj(user) for user in users]

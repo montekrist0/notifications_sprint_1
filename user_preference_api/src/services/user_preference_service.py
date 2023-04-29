@@ -18,7 +18,12 @@ class UserPreferenceService:
 
     async def get_users_info(self, group_id: str):
         filter_ = {"group_id": group_id} if group_id else None
-        users = await self.mongo_collection_of_users.find(filter_)
+        cursor = self.mongo_collection_of_users.find(filter_)
+
+        users = []
+        async for user in cursor:
+            users.append(user)
+
         return [UserInfo.parse_obj(user) for user in users]
 
     async def set_user_preference(self, user_id: str, preference: dict):

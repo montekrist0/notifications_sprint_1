@@ -47,7 +47,7 @@ async def update_user_preferences(
 @router.get(
     "/users",
     response_model=List[UserInfo],
-    summary="Получение информации о пользователе",
+    summary="Получение информации о пользователях группы или всех пользователях",
 )
 async def get_many_users_info(
     group_id: Optional[str] = None,

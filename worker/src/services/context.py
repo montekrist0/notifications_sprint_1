@@ -35,19 +35,11 @@ class ContextUsersCollectService(BaseContextCollectService):
 
 class ContextTemplateCollectService(BaseContextCollectService):
     async def get_template_mail(self, template_mail_id: str = None):
-        match template_mail_id:
-            case "1":
-                return "<div>Спасибо за регистрацию {{user_name}}</div>"
-            case "2":
-                return "<div>вам поставили {{likes_count_new}} лайк(-ов)</div>"
-            case "3":
-                return "<div>{{user_name}} для вас персональная рассылка</div>"
-            case "4":
-                return "<div>{{user_name}} массовая рассылка спешил фор ю</div>"
-            case "5":
-                return "<div>{{user_name}} {{content}}</div>"
-            case _:
-                return "<div>Hello {{user_name}}</div>"
+        url_params = f"/api/v1/email-template/?search={template_mail_id}"
+        template = await self.create_get_response(url_params=url_params)
+        if template:
+            return template[0]['html_text']
+        return '{{content}}'
 
 
 @lru_cache(maxsize=None)
@@ -59,5 +51,5 @@ def get_context_user_service():
 @lru_cache(maxsize=None)
 def get_context_template_service():
     # TODO ссылку надо поменять
-    context_template = ContextTemplateCollectService(settings.user_preference_api_url)
+    context_template = ContextTemplateCollectService(settings.mailer_panel_api_url)
     return context_template

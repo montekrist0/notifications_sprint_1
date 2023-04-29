@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-28 17:38+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+#: mailer/models.py:27
+msgid "Email Template"
+msgstr "Шаблон письм"
+
+#: mailer/models.py:28
+msgid "Email Templates"
+msgstr "Шаблоны письма"
+
+#: mailer/models.py:32
+msgid "name"
+msgstr "Название"
+
+#: mailer/models.py:37
+msgid "Group user"
+msgstr "Группа юзера"
+
+#: mailer/models.py:38
+msgid "Groups users"
+msgstr "Группа юзеров"
+
+#: mailer/models.py:42 mailer/models.py:56
+msgid "body"
+msgstr "Тело уведомления"
+
+#: mailer/models.py:43
+msgid "group_users"
+msgstr "Группа юзера"
+
+#: mailer/models.py:45 mailer/models.py:57
+msgid "delay"
+msgstr "Задержка"
+
+#: mailer/models.py:49
+msgid "Mass Notification"
+msgstr "Массовое уведомление"
+
+#: mailer/models.py:50
+msgid "Mass Notifications"
+msgstr "Массовые уведомления"
+
+#: mailer/models.py:54
+msgid "email"
+msgstr "Почта"
+
+#: mailer/models.py:55
+msgid "username"
+msgstr "Логин"
+
+#: mailer/models.py:61
+msgid "Individual Notification"
+msgstr "Личное уведомление"
+
+#: mailer/models.py:62
+msgid "Individual Notifications"
+msgstr "Личные уведомления"

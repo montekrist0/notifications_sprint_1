@@ -129,9 +129,48 @@ services:
     networks:
       - movies_network
 
+  notification_postgres:
+    image: postgres:14
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+    expose:
+      - 5432
+    networks:
+      - movies_network
+    ports:
+      - "5432:5432"
+
+  mailer_panel:
+    build:
+      context: ./mailer_panel
+    volumes:
+      - static_volume:/home/app/mailer_panel/staticfiles
+    depends_on:
+      notification_postgres:
+        condition: service_healthy
+      notifications_rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    networks:
+      - movies_network
+    ports:
+      - "8811:8000"
+
+
 networks:
   movies_network:
     external: true
+
+volumes:
+  static_volume:
 
 
 

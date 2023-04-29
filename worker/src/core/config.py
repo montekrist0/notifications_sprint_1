@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     worker_mongo_collection_notifications: str = Field(default="notifications")
 
     user_preference_api_url: str = Field(default="http://user_preference_api:8001")
+    mailer_panel_api_url: str = Field(default="http://mailerpanel:8000")
 
     sendinblue_apikey: str = Field(default="asd")
     sendinblue_email_sender: str = Field(default="asd")

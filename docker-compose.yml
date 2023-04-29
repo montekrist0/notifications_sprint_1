@@ -157,6 +157,7 @@ services:
       notifications_rabbitmq:
         condition: service_healthy
     restart: unless-stopped
+    hostname: mailerpanel
     env_file:
       - ./.env
     networks:

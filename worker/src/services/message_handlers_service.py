@@ -58,18 +58,17 @@ class EventHandler:
 
     async def handler_event_bulk_mails(self, message: DeliveredMessage):
         pass
-        # message_body = orjson.loads(message.body)
-        # group_id = message_body["group_id"]
-        # TODO в апи юзер преферренс нужна ручка
-        # users = await self.user_service.get_users(group_id=group_id)
-        # if users:
-        #     for user in users:
-        #         template = await self.template_mail_service.get_template_mail('4')
-        #         html_mail = await self.craft_template(template, user)
-        #         await self.build_notification(message_body,
-        #                                       user,
-        #                                       html_mail,
-        #                                       settings.worker_mongo_collection_notifications)
+        message_body = orjson.loads(message.body)
+        group_id = message_body["group_id"]
+        users = await self.user_service.get_users(group_id=group_id)
+        if users:
+            for user in users:
+                template = await self.template_mail_service.get_template_mail('4')
+                html_mail = await self.craft_template(template, user)
+                await self.build_notification(message_body,
+                                              user,
+                                              html_mail,
+                                              settings.worker_mongo_collection_notifications)
 
     async def handler_event_mail(self, message: DeliveredMessage):
         content = orjson.loads(message.body)

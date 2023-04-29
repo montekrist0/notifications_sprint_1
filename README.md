@@ -1,4 +1,4 @@
-Ссылка на репозиторий: https://github.com/montekrist0/ugc_sprint_2
+Ссылка на репозиторий: https://github.com/montekrist0/notifications_sprint_1
 
 # UGC-спринт 2
 

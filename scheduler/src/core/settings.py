@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     rabbitmq_username: str = Field(default="admin")
     rabbitmq_password: str = Field(default="admin")
 
-    mongo_host: str = Field(env="MONGO_WORKER_HOST", default="localhost")
-    mongo_port: int = Field(env="MONGO_WORKER_PORT", default=27127)
+    mongo_host: str = Field(env="WORKER_MONGO_HOST", default="localhost")
+    mongo_port: int = Field(env="WORKER_MONGO_PORT", default=27127)
     mongo_db: str = Field(env="WORKER_MONGO_DB", default="notifications")
     mongo_collection_notifications: str = Field(
         env="WORKER_MONGO_COLLECTION_NOTIFICATIONS", default="notifications"

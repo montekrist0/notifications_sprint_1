@@ -1,0 +1,8 @@
+aiormq==6.7.4
+pydantic==1.10.7
+celery==5.2.7
+pymongo==4.3.3
+aiohttp==3.8.4
+orjson==3.8.10
+sib-api-v3-sdk==7.6.0
+Jinja2==3.1.2

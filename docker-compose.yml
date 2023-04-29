@@ -1,0 +1,213 @@
+version: '3.8'
+
+services:
+  notifications_rabbitmq:
+    image: rabbitmq:3.9.29-management
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - movies_network
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  notifications_event_api:
+    build:
+      context: ./event_api
+    image: notification_event_api-image
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    depends_on:
+      notifications_rabbitmq:
+        condition: service_healthy
+    networks:
+      - movies_network
+    ports:
+      - "8001:8001"
+
+  user_preference_api:
+    build:
+      context: ./user_preference_api
+    image: user_preference_api-image
+    env_file:
+      - ./.env
+    container_name: user_preference_api
+    restart: unless-stopped
+    depends_on:
+      notifications_user_preference_mongo_db:
+        condition: service_healthy
+    networks:
+      - movies_network
+    ports:
+      - "8002:8001"
+
+  notification_nginx:
+    image: nginx:1.22.1
+    container_name: notification_nginx
+    volumes:
+      - static_volume:/data/static
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      mailer_panel:
+        condition: service_started
+      notification_postgres:
+        condition: service_healthy
+      notifications_rabbitmq:
+        condition: service_healthy
+      user_preference_api:
+        condition: service_started
+    ports:
+      - "80:80"
+    networks:
+      - movies_network
+
+  notifications_user_preference_mongo_db:
+    image: mongo:4.4.20-rc0-focal
+    restart: always
+    expose:
+      - "27017"
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_USER_PREFERENCE_DB}
+    volumes:
+      - ./db/mongo_user_preference:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "27017:27017"
+    networks:
+      - movies_network
+
+  notifications_user_preference_mongo_express:
+    image: mongo-express:1.0.0-alpha
+    restart: always
+    expose:
+      - "8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: notifications_user_preference_mongo_db
+      ME_CONFIG_MONGODB_PORT: 27017
+    ports:
+      - "8081:8081"
+    networks:
+      - movies_network
+
+  notifications_worker_mongo_db:
+    image: mongo:4.4.20-rc0-focal
+    restart: always
+    expose:
+      - "27017"
+    environment:
+      MONGO_INITDB_DATABASE: ${WORKER_MONGO_DB}
+    volumes:
+      - ./db/mongo_worker:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand('ping').ok" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "27127:27017"
+    networks:
+      - movies_network
+
+  notifications_worker_mongo_express:
+    image: mongo-express:1.0.0-alpha
+    restart: always
+    expose:
+      - "8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: notifications_worker_mongo_db
+      ME_CONFIG_MONGODB_PORT: 27017
+    ports:
+      - "8082:8081"
+    networks:
+      - movies_network
+
+  notification_worker:
+    build:
+      context: ./worker
+    image: notification_worker-image
+    env_file:
+      - ./.env
+    container_name: notification_worker
+    restart: unless-stopped
+    depends_on:
+      notifications_worker_mongo_db:
+        condition: service_healthy
+      user_preference_api:
+        condition: service_started
+      notifications_rabbitmq:
+        condition: service_healthy
+    networks:
+      - movies_network
+
+  notification_postgres:
+    image: postgres:14
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+    expose:
+      - 5432
+    networks:
+      - movies_network
+    ports:
+      - "5432:5432"
+
+  mailer_panel:
+    build:
+      context: ./mailer_panel
+    volumes:
+      - static_volume:/home/app/mailer_panel/staticfiles
+    depends_on:
+      notification_postgres:
+        condition: service_healthy
+      notifications_rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+    hostname: mailerpanel
+    env_file:
+      - ./.env
+    networks:
+      - movies_network
+    ports:
+      - "8811:8000"
+
+  notification_scheduler:
+    build:
+      context: ./scheduler
+    image: notiication_scheduler_image
+    env_file:
+      - ./.env
+    container_name: notification_scheduler
+    restart: unless-stopped
+    depends_on:
+      notifications_rabbitmq:
+        condition: service_healthy
+      notifications_worker_mongo_db:
+        condition: service_healthy
+    networks:
+      - movies_network
+
+networks:
+  movies_network:
+    external: true
+
+volumes:
+  static_volume:
+
+
+

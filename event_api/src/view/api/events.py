@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 
-from view.models import BulkMails, Like, Mail, PersonalSelection, Welcome
+from view.models import BulkMails, Like, Mail, PersonalSelection, Welcome, NotifyUser
 
 from services.like import LikeService, get_like_service
 from services.welcome import WelcomeService, get_welcome_service
@@ -43,4 +43,9 @@ async def send_bulk_mails(
 
 @router.post('/send-mail', summary='Индивидуальная рассылка')
 async def send_mail(data: Mail, service: MailService = Depends(get_mail_service)):
+    await service.send_event(data.dict())
+
+
+@router.post('/notify-user', summary='Уведомление от сервисов кинотеатра')
+async def send_mail(data: NotifyUser, service: MailService = Depends(get_mail_service)):
     await service.send_event(data.dict())

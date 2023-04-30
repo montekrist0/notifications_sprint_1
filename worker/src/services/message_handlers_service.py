@@ -72,6 +72,13 @@ class EventHandler:
                 )
 
     async def handler_event_mail(self, message: DeliveredMessage):
+        # TODO: добавить логику обработки сообщения
+        #  В этот обработчик будет приходить два типа сообщений
+        #  1) от менеджера через админку с конкретным email,
+        #  2) от прочих сервисов с user_id
+        #  В случае передачи user_id требуется идти в сервис пользовательских предпочтений
+        #  По-хорошему, там же нужно иметь и доставать оттуда доступные способы уведомлений (push, email и пр.)
+
         content = orjson.loads(message.body)
         template = await self.template_mail_service.get_template_mail('5')
         html_mail = await self.craft_template(template, content)

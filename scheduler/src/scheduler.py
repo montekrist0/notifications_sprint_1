@@ -28,7 +28,7 @@ class Scheduler:
 
     def get_week_top_viewed_movie_event(self):
         top_movie = self.movie_service.get_top_week_viewed_movies()
-        event_payload = {"group_id": str(Groups.subscribers), "content": top_movie}
+        event_payload = {'group_id': str(Groups.subscribers), 'content': top_movie}
         requests.post(url=settings.event_api_mass_notifications_url, json=event_payload)
 
     def get_personal_selections(self):

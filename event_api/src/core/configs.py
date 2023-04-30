@@ -1,5 +1,4 @@
-from pydantic import (BaseSettings,
-                      Field)
+from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):
@@ -11,7 +10,9 @@ class Settings(BaseSettings):
 
     rabbitmq_queue_send_welcome: str = Field(default='emails.send-welcome')
     rabbitmq_queue_send_like: str = Field(default='emails.send-like')
-    rabbitmq_queue_send_personal_selection: str = Field(default='emails.send-personal_selection')
+    rabbitmq_queue_send_personal_selection: str = Field(
+        default='emails.send-personal_selection'
+    )
     rabbitmq_queue_send_bulk_mails: str = Field(default='emails.send-bulk_mails')
     rabbitmq_queue_send_mail: str = Field(default='emails.send-mail')
 

@@ -6,8 +6,8 @@ from pymongo import MongoClient
 
 from scheduler import Scheduler
 
-app = Celery("tasks", broker=broker_url)
-app.conf.task_queues = {"periodic": {"exchange": "periodic"}}
+app = Celery('tasks', broker=broker_url)
+app.conf.task_queues = {'periodic': {'exchange': 'periodic'}}
 
 mongo_client = MongoClient(host=settings.mongo_host, port=settings.mongo_port)
 db_manager = MongoDatabaseManager(mongo_client)
@@ -30,19 +30,19 @@ def generate_new_movie_event():
 
 
 app.conf.beat_schedule = {
-    "review_like_event": {
-        "task": "tasks.generate_reviews_like_events",
-        "schedule": crontab(hour=12, minute=0),
-        "options": {"queue": "periodic"},
+    'review_like_event': {
+        'task': 'tasks.generate_reviews_like_events',
+        'schedule': crontab(hour=12, minute=0),
+        'options': {'queue': 'periodic'},
     },
-    "top_week_viewed_movie_event": {
-        "task": "tasks.generate_top_week_viewed_movie_event",
-        "schedule": crontab(hour=12, minute=0, day_of_week=1),
-        "options": {"queue": "periodic"},
+    'top_week_viewed_movie_event': {
+        'task': 'tasks.generate_top_week_viewed_movie_event',
+        'schedule': crontab(hour=12, minute=0, day_of_week=1),
+        'options': {'queue': 'periodic'},
     },
-    "new_movie_event": {
-        "task": "tasks.generate_new_movie_event",
-        "schedule": crontab(hour=13, minute=0),
-        "options": {"queue": "periodic"},
+    'new_movie_event': {
+        'task': 'tasks.generate_new_movie_event',
+        'schedule': crontab(hour=13, minute=0),
+        'options': {'queue': 'periodic'},
     },
 }

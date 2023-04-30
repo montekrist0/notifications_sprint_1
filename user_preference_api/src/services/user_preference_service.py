@@ -12,12 +12,12 @@ class UserPreferenceService:
 
     async def get_user_info(self, user_id: str):
         user_info_doc = await self.mongo_collection_of_users.find_one(
-            {"user_id": user_id}
+            {'user_id': user_id}
         )
         return UserInfo.parse_obj(user_info_doc)
 
     async def get_users_info(self, group_id: str):
-        filter_ = {"group_id": group_id} if group_id else None
+        filter_ = {'group_id': group_id} if group_id else None
         cursor = self.mongo_collection_of_users.find(filter_)
 
         users = []
@@ -28,7 +28,7 @@ class UserPreferenceService:
 
     async def set_user_preference(self, user_id: str, preference: dict):
         result = await self.mongo_collection_of_users.update_one(
-            {"user_id": user_id}, {"$set": preference}
+            {'user_id': user_id}, {'$set': preference}
         )
         if result.modified_count:
             return True

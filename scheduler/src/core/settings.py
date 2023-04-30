@@ -4,16 +4,16 @@ from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):
-    rabbitmq_host: str = Field(default="localhost")
+    rabbitmq_host: str = Field(default='localhost')
     rabbitmq_port: int = Field(default=5672)
-    rabbitmq_username: str = Field(default="admin")
-    rabbitmq_password: str = Field(default="admin")
+    rabbitmq_username: str = Field(default='admin')
+    rabbitmq_password: str = Field(default='admin')
 
-    mongo_host: str = Field(env="WORKER_MONGO_HOST", default="localhost")
-    mongo_port: int = Field(env="WORKER_MONGO_PORT", default=27127)
-    mongo_db: str = Field(env="WORKER_MONGO_DB", default="notifications")
+    mongo_host: str = Field(env='WORKER_MONGO_HOST', default='localhost')
+    mongo_port: int = Field(env='WORKER_MONGO_PORT', default=27127)
+    mongo_db: str = Field(env='WORKER_MONGO_DB', default='notifications')
     mongo_collection_notifications: str = Field(
-        env="WORKER_MONGO_COLLECTION_NOTIFICATIONS", default="notifications"
+        env='WORKER_MONGO_COLLECTION_NOTIFICATIONS', default='notifications'
     )
 
     event_api_base_url: str
@@ -29,6 +29,6 @@ class ApiSettings(str, Enum):
 
 settings = Settings()
 broker_url = (
-    f"pyamqp://{settings.rabbitmq_username}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:"
-    f"{settings.rabbitmq_port}/"
+    f'pyamqp://{settings.rabbitmq_username}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:'
+    f'{settings.rabbitmq_port}/'
 )

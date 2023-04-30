@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from mailer.models import (GroupUser,
-                           EmailTemplate)
+from mailer.models import GroupUser, EmailTemplate
 
 
 class GroupUserSerializer(serializers.ModelSerializer):

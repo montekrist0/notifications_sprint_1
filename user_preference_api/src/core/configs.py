@@ -7,11 +7,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class Settings(BaseSettings):
-    mongo_user_preference_host: str = Field(default="localhost")
-    mongo_user_preference_port: int = Field(default="27017")
-    mongo_user_preference_db: str = Field(default="users")
-    user_preference_collection: str = Field(default="users")
-    # sentry_dsn: str = "https://df496bbaed8a404fba24854a4b782d70@o4505008417144832.ingest.sentry.io/4505008421535744"
+    mongo_user_preference_host: str = Field(default='localhost')
+    mongo_user_preference_port: int = Field(default='27017')
+    mongo_user_preference_db: str = Field(default='users')
+    user_preference_collection: str = Field(default='users')
+    sentry_dsn: str = "https://df496bbaed8a404fba24854a4b782d70@o4505008417144832.ingest.sentry.io/4505008421535744"
     traces_sample_rate: float = 1.0
 
 

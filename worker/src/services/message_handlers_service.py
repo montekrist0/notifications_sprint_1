@@ -57,7 +57,6 @@ class EventHandler:
                 )
 
     async def handler_event_bulk_mails(self, message: DeliveredMessage):
-        pass
         message_body = orjson.loads(message.body)
         group_id = message_body['group_id']
         users = await self.user_service.get_users(group_id=group_id)

@@ -3,6 +3,11 @@ up:
 	make admin
 	make static
 
+dev-up:
+	docker-compose -f docker-compose.dev.yml up
+	make admin
+	make static
+
 down:
 	docker-compose down -v
 

@@ -6,17 +6,17 @@ from services.base import BaseContextCollectService
 
 class ContextUsersCollectService(BaseContextCollectService):
     async def get_user(self, user_id: str):
-        url_params = f"/api/v1/notification_preference/users/{user_id}"
+        url_params = f'/api/v1/notification_preference/users/{user_id}'
         user = await self.create_get_response(url_params=url_params)
         if self.is_personal_notification(user):
             return user
         return None
 
     async def get_users(self, group_id: str = None):
-        url_params = "/api/v1/notification_preference/users"
+        url_params = '/api/v1/notification_preference/users'
         params_request = None
         if group_id:
-            params_request = {"group_id": group_id}
+            params_request = {'group_id': group_id}
         users = await self.create_get_response(url_params, params_request)
         actual_users = []
         for user in users:
@@ -28,14 +28,14 @@ class ContextUsersCollectService(BaseContextCollectService):
 
     @staticmethod
     def is_personal_notification(user: dict):
-        if user["allow_personal_notifications"]:
+        if user['allow_personal_notifications']:
             return True
         return False
 
 
 class ContextTemplateCollectService(BaseContextCollectService):
     async def get_template_mail(self, template_mail_id: str = None):
-        url_params = f"/api/v1/email-template/?search={template_mail_id}"
+        url_params = f'/api/v1/email-template/?search={template_mail_id}'
         template = await self.create_get_response(url_params=url_params)
         if template:
             return template[0]['html_text']

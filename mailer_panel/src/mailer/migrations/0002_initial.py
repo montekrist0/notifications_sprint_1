@@ -1,11 +1,8 @@
 from django.db import migrations
-from mailer.mail_template import (welcome,
-                                  like,
-                                  personal_selection,
-                                  mass,
-                                  private)
+from mailer.mail_template import welcome, like, personal_selection, mass, private
 
 from datetime import datetime
+
 date_ = datetime.now()
 
 

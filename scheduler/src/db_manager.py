@@ -24,16 +24,16 @@ class MongoDatabaseManager:
     def get_review_like_persons_for_notification(self) -> List[dict]:
         """Метод для поиска тех, кому уже можно отправить письмо."""
 
-        query = {"content.review_id": {"$exists": True}}
+        query = {'content.review_id': {'$exists': True}}
         review_notifications = list(
             filter(
-                lambda doc: doc["content"]["likes_count_new"]
-                > doc["content"]["likes_count_old"],
+                lambda doc: doc['content']['likes_count_new']
+                > doc['content']['likes_count_old'],
                 self.notification_collection.find(query),
             )
         )
 
         return [
-            ReviewLikeModel(**notif.get("content")).dict()
+            ReviewLikeModel(**notif.get('content')).dict()
             for notif in review_notifications
         ]

@@ -30,11 +30,11 @@ class EventHandler:
     async def handler_event_welcome(self, message: DeliveredMessage):
         content: dict = orjson.loads(message.body)
 
-        user_id: str = content["user_id"]
+        user_id: str = content['user_id']
         user = await self.user_service.get_user(user_id)
         if user:
             # TODO надо знать id template mail
-            template = await self.template_mail_service.get_template_mail("1")
+            template = await self.template_mail_service.get_template_mail('1')
             html_mail = await self.craft_template(template, user)
             await self.build_notification(
                 content, user, html_mail, settings.worker_mongo_collection_notifications
@@ -43,11 +43,11 @@ class EventHandler:
     async def handler_event_personal_selection(self, message: DeliveredMessage):
         message_body = orjson.loads(message.body)
         for content in message_body:
-            user_id = content["user_id"]
+            user_id = content['user_id']
             user = await self.user_service.get_user(user_id)
             if user:
                 # TODO надо знать id template mail
-                template = await self.template_mail_service.get_template_mail("3")
+                template = await self.template_mail_service.get_template_mail('3')
                 html_mail = await self.craft_template(template, user)
                 await self.build_notification(
                     message_body,
@@ -59,20 +59,22 @@ class EventHandler:
     async def handler_event_bulk_mails(self, message: DeliveredMessage):
         pass
         message_body = orjson.loads(message.body)
-        group_id = message_body["group_id"]
+        group_id = message_body['group_id']
         users = await self.user_service.get_users(group_id=group_id)
         if users:
             for user in users:
                 template = await self.template_mail_service.get_template_mail('4')
                 html_mail = await self.craft_template(template, user)
-                await self.build_notification(message_body,
-                                              user,
-                                              html_mail,
-                                              settings.worker_mongo_collection_notifications)
+                await self.build_notification(
+                    message_body,
+                    user,
+                    html_mail,
+                    settings.worker_mongo_collection_notifications,
+                )
 
     async def handler_event_mail(self, message: DeliveredMessage):
         content = orjson.loads(message.body)
-        template = await self.template_mail_service.get_template_mail("5")
+        template = await self.template_mail_service.get_template_mail('5')
         html_mail = await self.craft_template(template, content)
         await self.build_notification(
             content, content, html_mail, settings.worker_mongo_collection_notifications
@@ -82,8 +84,8 @@ class EventHandler:
         message_body = orjson.loads(message.body)
         await self.update_or_create_notification_like(
             settings.worker_mongo_collection_notifications,
-            message_body["user_id"],
-            message_body["review_id"],
+            message_body['user_id'],
+            message_body['review_id'],
         )
 
     @staticmethod
@@ -97,16 +99,16 @@ class EventHandler:
     ):
         utc_time = get_current_utc_datetime()
         notification = {
-            "content": content,
-            "status_id": 1,
-            "type_id": 1,
-            "text_emai": html_mail,
-            "last_update": utc_time,
-            "last_notification_update": utc_time,
+            'content': content,
+            'status_id': 1,
+            'type_id': 1,
+            'text_emai': html_mail,
+            'last_update': utc_time,
+            'last_notification_update': utc_time,
         }
         notification_id = self.db_manager.insert_one(collection_name, notification)
         send_email.apply_async(
-            (user["email"], html_mail, "Уведомление", str(notification_id))
+            (user['email'], html_mail, 'Уведомление', str(notification_id))
         )
 
     async def update_or_create_notification_like(
@@ -116,24 +118,24 @@ class EventHandler:
             collection_name, user_id, review_id
         )
         if notification_like:
-            self.db_manager.update_like_by_id(collection_name, notification_like["_id"])
+            self.db_manager.update_like_by_id(collection_name, notification_like['_id'])
         else:
             content = {
-                "user_id": user_id,
-                "review_id": review_id,
-                "likes_count_new": 1,
-                "likes_count_old": 1,
+                'user_id': user_id,
+                'review_id': review_id,
+                'likes_count_new': 1,
+                'likes_count_old': 1,
             }
-            template = await self.template_mail_service.get_template_mail("2")
+            template = await self.template_mail_service.get_template_mail('2')
             html_mail = await self.craft_template(template, content)
             utc_time = get_current_utc_datetime()
             notification = {
-                "content": content,
-                "status_id": 1,
-                "type_id": 1,
-                "text_emai": html_mail,
-                "last_update": utc_time,
-                "last_notification_update": utc_time,
+                'content': content,
+                'status_id': 1,
+                'type_id': 1,
+                'text_emai': html_mail,
+                'last_update': utc_time,
+                'last_notification_update': utc_time,
             }
             self.db_manager.insert_one(collection_name, notification)
 

@@ -23,12 +23,12 @@ class PydanticObjectId(ObjectId):
     @classmethod
     def validate(cls, v):
         if not isinstance(v, ObjectId):
-            raise TypeError("ObjectId required")
+            raise TypeError('ObjectId required')
         return str(v)
 
 
 class UserInfo(Base):
-    id: PydanticObjectId = Field(default_factory=ObjectId, alias="_id")
+    id: PydanticObjectId = Field(default_factory=ObjectId, alias='_id')
     user_id: str
     group_id: str
     email: str

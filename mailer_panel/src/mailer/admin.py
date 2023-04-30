@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import (MassNotification,
-                     IndividualNotification)
+from .models import MassNotification, IndividualNotification
 
 
 @admin.register(MassNotification)

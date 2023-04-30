@@ -41,8 +41,13 @@ class GroupUser(UUIDMixin, TimeStampedMixin):
 
 class MassNotification(UUIDMixin, TimeStampedMixin):
     body = models.TextField(_('body'), blank=False, null=False)
-    group = models.ForeignKey(GroupUser, on_delete=models.SET_NULL, verbose_name=_('group_users'), blank=True,
-                              null=True)
+    group = models.ForeignKey(
+        GroupUser,
+        on_delete=models.SET_NULL,
+        verbose_name=_('group_users'),
+        blank=True,
+        null=True,
+    )
     delay = models.IntegerField(_('delay'), blank=False, null=False)
 
     class Meta:

@@ -11,9 +11,9 @@ router = APIRouter()
 
 
 @router.get(
-    "/users/{user_id}",
+    '/users/{user_id}',
     response_model=UserInfo,
-    summary="Получение информации о пользователе",
+    summary='Получение информации о пользователе',
 )
 async def get_one_user_info(
     user_id: str,
@@ -24,9 +24,9 @@ async def get_one_user_info(
 
 
 @router.patch(
-    "/users/{user_id}",
+    '/users/{user_id}',
     response_model=UserInfo,
-    summary="Обновление записи о пользователе",
+    summary='Обновление записи о пользователе',
 )
 async def update_user_preferences(
     user_id: str,
@@ -37,17 +37,17 @@ async def update_user_preferences(
         user_id, dict(preferences_params)
     )
     if update_result:
-        return Response("Preferences were updated", status_code=status.HTTP_200_OK)
+        return Response('Preferences were updated', status_code=status.HTTP_200_OK)
 
     return Response(
-        "Preferences were not updated", status_code=status.HTTP_304_NOT_MODIFIED
+        'Preferences were not updated', status_code=status.HTTP_304_NOT_MODIFIED
     )
 
 
 @router.get(
-    "/users",
+    '/users',
     response_model=List[UserInfo],
-    summary="Получение информации о пользователях группы или всех пользователях",
+    summary='Получение информации о пользователях группы или всех пользователях',
 )
 async def get_many_users_info(
     group_id: Optional[str] = None,

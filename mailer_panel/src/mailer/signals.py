@@ -2,11 +2,9 @@ import orjson
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from config.components.common import (EVENT_API_BULK_MAILS,
-                                      EVENT_API_ONE_MAIL)
+from config.components.common import EVENT_API_BULK_MAILS, EVENT_API_ONE_MAIL
 from mailer.tasks import send_event
-from mailer.models import (MassNotification,
-                           IndividualNotification)
+from mailer.models import MassNotification, IndividualNotification
 
 
 @receiver(post_save, sender=MassNotification)
@@ -31,4 +29,3 @@ def run_task_event(sender, instance, **kwargs):
         }
         delay = instance.delay
     send_event.apply_async(args=(url_event, body_request), countdown=delay)
-

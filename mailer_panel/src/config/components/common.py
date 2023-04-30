@@ -34,4 +34,3 @@ MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 EVENT_API_BULK_MAILS = 'notifications_event_api:8001/api/v1/events/send-bulk_mails'
 EVENT_API_ONE_MAIL = 'notifications_event_api:8001/api/v1/events/send-mail'
-

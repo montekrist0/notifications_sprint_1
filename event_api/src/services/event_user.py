@@ -4,10 +4,10 @@ from core.configs import settings
 from services.base import BaseEventService
 
 
-class LikeService(BaseEventService):
+class EventUserService(BaseEventService):
     pass
 
 
 @lru_cache(maxsize=None)
-def get_like_service():
-    return LikeService(settings.rabbitmq_queue_send_like)
+def get_event_user_service():
+    return EventUserService(settings.rabbitmq_queue_send_mail)

@@ -1,10 +1,10 @@
 from functools import lru_cache
 
 from core.configs import settings
-from services.base import BaseService
+from services.base import BaseEventService
 
 
-class PersonalSelectionService(BaseService):
+class PersonalSelectionService(BaseEventService):
     pass
 
 

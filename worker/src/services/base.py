@@ -1,3 +1,5 @@
+from abc import (ABC,
+                 abstractmethod)
 import aiohttp
 
 
@@ -6,7 +8,7 @@ class BaseContextCollectService:
         self.url: str = url
 
     async def create_get_response(
-        self, url_params: str = None, params_request: dict = None
+            self, url_params: str = None, params_request: dict = None
     ):
         async with aiohttp.ClientSession() as session:
             url = self.url
@@ -20,3 +22,22 @@ class BaseContextCollectService:
                     return None
             except aiohttp.ClientOSError:
                 return None
+
+
+class BaseNotificationService(ABC):
+
+    @abstractmethod
+    async def build_notification(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    async def update_or_create_notification_like(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def craft_template(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    async def send_notification(self, *args, **kwargs):
+        pass

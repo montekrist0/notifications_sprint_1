@@ -2,7 +2,7 @@ import orjson
 from db.channels.rabbitmq import send_to_rabbitmq
 
 
-class BaseService:
+class BaseEventService:
     def __init__(self, rabbitmq_queue: str):
         self.rabbitmq_queue = rabbitmq_queue
 
@@ -10,6 +10,3 @@ class BaseService:
         data = orjson.dumps(data)
         await send_to_rabbitmq(self.rabbitmq_queue, data)
 
-
-class BaseContextCollectService:
-    pass
